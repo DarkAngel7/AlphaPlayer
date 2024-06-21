@@ -41,6 +41,8 @@ NS_ASSUME_NONNULL_BEGIN
 */
 - (void)playWithMetalConfiguration:(BDAlphaPlayerMetalConfiguration *)configuration;
 
+- (void)playVideoWithPath:(NSString *)path renderSuperViewFrame:(CGRect)renderSuperViewFrame contentMode:(int)contentMode;
+
 /**
  @brief Get total duration of currently displaying MP4.Duration is only available after [BDAlphaPlayerMetalView playWithMetalConfiguration:] method called.
 
@@ -48,6 +50,8 @@ NS_ASSUME_NONNULL_BEGIN
  @return Total Duration of MP4.
 */
 - (NSTimeInterval)totalDurationOfPlayingEffect;
+
+- (void)play;
 
 /**
  @brief Stop displaying without calling didFinishPlayingWithError method.

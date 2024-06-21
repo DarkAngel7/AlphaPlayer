@@ -71,6 +71,35 @@
     [self play];
 }
 
+- (void)playVideoWithPath:(NSString *)path renderSuperViewFrame:(CGRect)renderSuperViewFrame contentMode:(int)contentMode
+{
+  if (path.length == 0){
+    NSLog(@"directory为空");
+    return;
+  }
+  self.renderSuperViewFrame = renderSuperViewFrame;
+
+  BDAlphaPlayerResourceModel *resourceModel = [BDAlphaPlayerResourceModel new];
+
+  BDAlphaPlayerResourceInfo *portraitResourceInfo = [BDAlphaPlayerResourceInfo new];
+  portraitResourceInfo.contentMode = contentMode;
+  portraitResourceInfo.resourceName = [path lastPathComponent];
+  portraitResourceInfo.resourceFilePath = path;
+//  portraitResourceInfo.resourceFileURL = [NSURL fileURLWithPath:path];
+  portraitResourceInfo.resourceFileURL = [NSURL URLWithString:path];
+  resourceModel.portraitResourceInfo = portraitResourceInfo;
+
+  resourceModel.currentOrientationResourceInfo = portraitResourceInfo;
+
+  self.model = resourceModel;
+
+  if (!self.model) {
+    return;
+  }
+  [self configRenderViewContentModeFromModel];
+  [self play];
+}
+
 - (NSTimeInterval)totalDurationOfPlayingEffect
 {
     if (self.output) {
@@ -161,7 +190,7 @@
         if (!wSelf) {
             return;
         }
-        [wSelf destroyMTKView];
+//        [wSelf destroyMTKView];
         if (renderCompletion) {
             renderCompletion();
         }
