@@ -71,6 +71,33 @@
     [self play];
 }
 
+- (void)playVideoWithFileURL:(NSURL *)url renderSuperViewFrame:(CGRect)renderSuperViewFrame contentMode:(int)contentMode
+{
+  if (url.path.length == 0){
+    NSLog(@"directory为空");
+    return;
+  }
+  self.renderSuperViewFrame = renderSuperViewFrame;
+
+  BDAlphaPlayerResourceModel *resourceModel = [BDAlphaPlayerResourceModel new];
+  BDAlphaPlayerResourceInfo *portraitResourceInfo = [BDAlphaPlayerResourceInfo new];
+
+  portraitResourceInfo.contentMode = contentMode;
+  NSString *path = [url path];
+  portraitResourceInfo.resourceName = [path lastPathComponent];
+  portraitResourceInfo.resourceFilePath = path;
+  portraitResourceInfo.resourceFileURL = url;
+  resourceModel.portraitResourceInfo = portraitResourceInfo;
+  resourceModel.currentOrientationResourceInfo = portraitResourceInfo;
+  self.model = resourceModel;
+
+  if (!self.model) {
+    return;
+  }
+  [self configRenderViewContentModeFromModel];
+  [self play];
+}
+
 - (void)playVideoWithPath:(NSString *)path renderSuperViewFrame:(CGRect)renderSuperViewFrame contentMode:(int)contentMode
 {
   if (path.length == 0){
@@ -85,8 +112,11 @@
   portraitResourceInfo.contentMode = contentMode;
   portraitResourceInfo.resourceName = [path lastPathComponent];
   portraitResourceInfo.resourceFilePath = path;
-//  portraitResourceInfo.resourceFileURL = [NSURL fileURLWithPath:path];
-  portraitResourceInfo.resourceFileURL = [NSURL URLWithString:path];
+//  portraitResourceInfo.resourceFileURL = [NSURL fileURLWithPath:path isDirectory:NO];
+  portraitResourceInfo.resourceFileURL = [NSURL fileURLWithPath:path];
+  NSLog(@"playing video path: %@", path);
+  NSLog(@"playing video url: %@", portraitResourceInfo.resourceFileURL);
+//  portraitResourceInfo.resourceFileURL = [NSURL URLWithString:path];
   resourceModel.portraitResourceInfo = portraitResourceInfo;
 
   resourceModel.currentOrientationResourceInfo = portraitResourceInfo;

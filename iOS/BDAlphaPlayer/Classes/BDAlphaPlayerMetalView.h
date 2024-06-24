@@ -41,6 +41,8 @@ NS_ASSUME_NONNULL_BEGIN
 */
 - (void)playWithMetalConfiguration:(BDAlphaPlayerMetalConfiguration *)configuration;
 
+- (void)playVideoWithFileURL:(NSURL *)url renderSuperViewFrame:(CGRect)renderSuperViewFrame contentMode:(int)contentMode;
+
 - (void)playVideoWithPath:(NSString *)path renderSuperViewFrame:(CGRect)renderSuperViewFrame contentMode:(int)contentMode;
 
 /**
