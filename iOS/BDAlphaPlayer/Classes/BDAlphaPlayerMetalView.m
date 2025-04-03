@@ -176,6 +176,10 @@
     NSError *error = nil;
     BDAlphaPlayerAssetReaderOutput *output = [[BDAlphaPlayerAssetReaderOutput alloc] initWithURL:url error:&error];
     CGRect rederFrame = [BDAlphaPlayerUtility frameFromVideoSize:output.videoSize renderSuperViewFrame:self.renderSuperViewFrame resourceModel:self.model];
+    // fix crashes caused by invalid rederFrame
+    if (CGRectIsNull(rederFrame) || CGRectIsInfinite(rederFrame) || CGRectIsEmpty(rederFrame)) {
+      rederFrame = CGRectMake(0, 0, 1, 1);
+    }
     self.frame = rederFrame;
     
     if (error) {
