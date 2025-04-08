@@ -170,6 +170,19 @@
 
 #pragma mark Player
 
+BOOL isFrameValid(CGRect frame) {
+    return
+    !CGRectIsNull(frame) &&
+    !CGRectIsInfinite(frame) &&
+    !CGRectIsEmpty(frame) &&
+    !isnan(frame.origin.x) &&
+    !isnan(frame.origin.y) &&
+    !isnan(frame.size.width) &&
+    !isnan(frame.size.height) &&
+    frame.size.width > 0 &&
+    frame.size.height > 0;
+}
+
 - (void)play
 {
     NSURL *url = [self.model.currentOrientationResourceInfo resourceFileURL];
@@ -177,7 +190,7 @@
     BDAlphaPlayerAssetReaderOutput *output = [[BDAlphaPlayerAssetReaderOutput alloc] initWithURL:url error:&error];
     CGRect rederFrame = [BDAlphaPlayerUtility frameFromVideoSize:output.videoSize renderSuperViewFrame:self.renderSuperViewFrame resourceModel:self.model];
     // fix crashes caused by invalid rederFrame
-    if (CGRectIsNull(rederFrame) || CGRectIsInfinite(rederFrame) || CGRectIsEmpty(rederFrame)) {
+    if (!isFrameValid(rederFrame)) {
       rederFrame = CGRectMake(0, 0, 1, 1);
     }
     self.frame = rederFrame;
